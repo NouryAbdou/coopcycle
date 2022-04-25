@@ -1,0 +1,67 @@
+entity Zones {
+	city String required
+    metropole String,
+    com String
+}
+
+entity Cooperatives {
+	cooperativesName String required minlength(5)
+}
+
+entity Livreurs {
+	livreurFName String required minlength(5) 
+	livreurLName String required minlength(10) 
+	city String required minlength(3)
+}
+
+entity Restaurateurs {
+	restaurateurFName String required minlength(5)
+    restaurateurLName String required minlength(5)
+    city String,
+}
+
+entity Restaurants {
+	Name String required minlength(5)
+	carte String required,
+	menu String
+}
+
+entity Clients {
+	clientFName String required,
+	clientLName String required ,
+	email String,
+	phoneNumber String required,
+}
+
+entity Commandes {
+	id String,
+    estPret Boolean,
+    estPaye Boolean
+}
+
+relationship OneToOne {
+    Clients { restaurateur } to Restaurateurs { client },
+    Livreurs { restaurateur } to Restaurateurs { livreur },
+}
+
+relationship ManyToMany {
+	
+	Commandes { restaurant } to Restaurants { commande }
+}
+
+relationship OneToMany {
+	Zones to Cooperatives { zone },
+  	Restaurateurs to Restaurants { restaurateur },
+}
+
+relationship ManyToOne {
+    
+    Livreurs { cooperative } to Cooperatives,
+    
+    Restaurateurs { cooperative } to Cooperatives,
+    
+    Commandes { client } to Clients { commande }
+}
+
+// Use Data Transfer Objects (DTO)
+dto * with mapstruct
